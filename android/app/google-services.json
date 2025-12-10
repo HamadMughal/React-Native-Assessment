@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "832114481302",
+    "project_id": "react-native-assessment-85ca1",
+    "storage_bucket": "react-native-assessment-85ca1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832114481302:android:7a6ce5edf882aa8ccf8ab7",
+        "android_client_info": {
+          "package_name": "com.reactnativeassessment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfebF3uvdwLYBLR1kf5Pam5qt3itBwdhQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
