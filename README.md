@@ -1,22 +1,24 @@
-# Quick Start Guide
+# React Native Assessment App
 
-## 🚀 Run the App
+A comprehensive React Native application featuring authentication, product management, and push notifications with Redux Toolkit, RTK Query, and Firebase Cloud Messaging.
+
+## 🚀 Installation & Setup
 
 ```bash
-# Install dependencies (if not done)
-npm install
+# Install dependencies
+yarn install
 
-# iOS
-npm run pods
-npm run ios
+# iOS setup
+yarn pods
+yarn ios
 
-# Android
-npm run android
+# Android setup
+yarn android
 ```
 
 ## 🔐 Login Credentials
 
-Try these test users from DummyJSON:
+Test users from DummyJSON API:
 
 | Username | Password | Name |
 |----------|----------|------|
@@ -44,12 +46,12 @@ More users: https://dummyjson.com/users
 │   Screen    │◄─────│   Screen    │
 └──────┬──────┘      └─────────────┘
        │
-       ├─ Click Post
+       ├─ Click Product
        │
        ▼
 ┌─────────────┐
-│ Post Detail │
-│   Screen    │
+│  Product    │
+│   Detail    │
 └─────────────┘
 ```
 
@@ -57,126 +59,141 @@ More users: https://dummyjson.com/users
 
 ```
 src/
-├── components/          # Reusable UI components
+├── components/              # Reusable UI components
 │   ├── Button.tsx
 │   ├── Input.tsx
-│   └── PostCard.tsx
+│   └── ProductCard.tsx
 │
-├── constants/          # App constants
+├── constants/              # App constants
 │   ├── colors.ts
 │   └── strings.ts
 │
-├── data/              # Dummy data
-│   └── dummyData.ts
+├── hooks/                  # Custom React hooks
+│   └── useFcm.ts          # FCM token hook
 │
-├── navigation/        # Navigation setup
+├── navigation/             # Navigation setup
 │   └── AppNavigator.tsx
 │
-├── screens/           # Screen components
+├── screens/               # Screen components
 │   ├── SplashScreen.tsx
 │   ├── LoginScreen.tsx
 │   ├── FeedScreen.tsx
-│   └── PostDetailScreen.tsx
+│   └── ProductDetailScreen.tsx
 │
-├── store/             # Redux store
-│   ├── services/
-│   │   └── authApi.ts      # API endpoints
-│   ├── slices/
-│   │   └── authSlice.ts    # Auth state
-│   ├── hooks.ts            # Typed hooks
-│   └── store.ts            # Store config
+├── services/              # External services
+│   └── firebaseNotificationHandler.ts  # FCM setup
 │
-├── types/             # TypeScript types
+├── store/                 # Redux store
+│   ├── services/          # RTK Query APIs
+│   │   ├── baseApi.ts     # Base API configuration
+│   │   ├── authApi.ts     # Authentication endpoints
+│   │   └── productsApi.ts # Products endpoints
+│   ├── slices/           # Redux slices
+│   │   ├── authSlice.ts  # Auth state management
+│   │   └── fcmSlice.ts   # FCM token management
+│   ├── hooks.ts          # Typed Redux hooks
+│   └── store.ts          # Store configuration
+│
+├── types/                # TypeScript definitions
 │   └── navigation.ts
 │
-└── utils/             # Utility functions
+└── utils/                # Utility functions
     └── validation.ts
 ```
 
-## 🔑 Key Files
+## 🔑 Key Features
 
-### App.tsx
-Entry point with Redux Provider and PersistGate
+### 🔐 Authentication System
+- JWT-based authentication with DummyJSON API
+- Persistent login state with Redux Persist
+- Secure token storage
 
-### src/store/store.ts
-Redux store configuration with persist
+### 📊 State Management
+- **Redux Toolkit** for efficient state management
+- **RTK Query** for API data fetching and caching
+- **Redux Persist** for data persistence
+- Type-safe Redux hooks
 
-### src/store/services/authApi.ts
-RTK Query API definitions
+### 🔔 Push Notifications
+- **Firebase Cloud Messaging** integration
+- Foreground and background notification handling
+- FCM token management in Redux store
+- Cross-platform notification support
 
-### src/store/slices/authSlice.ts
-Auth state management
+### 🛒 Product Management
+- Product listing with pagination
+- Product detail views
+- API-driven product data
+- Optimized data fetching with RTK Query
 
-### src/screens/LoginScreen.tsx
-Login with API integration
+### 🎨 UI/UX
+- Clean, modern interface
+- Responsive design
+- Loading states and error handling
+- Smooth navigation with React Navigation
 
-### src/screens/FeedScreen.tsx
-Feed with user info and logout
+## 🏗️ Architecture
 
-## 💡 Usage Examples
-
-### Access User Data
-```typescript
-import { useAppSelector } from '../store/hooks';
-
-const { user, token, isAuthenticated } = useAppSelector(state => state.auth);
+### Redux Store Structure
+```
+store/
+├── services/
+│   ├── baseApi.ts      # RTK Query base configuration
+│   ├── authApi.ts      # Authentication endpoints
+│   └── productsApi.ts  # Product management endpoints
+├── slices/
+│   ├── authSlice.ts    # User authentication state
+│   └── fcmSlice.ts     # FCM token management
+└── store.ts            # Store configuration with persistence
 ```
 
-### Call Login API
-```typescript
-import { useLoginMutation } from '../store/services/authApi';
+### API Integration
+- **Base API**: Centralized RTK Query configuration
+- **Auth API**: Login/logout endpoints with token management
+- **Products API**: Product listing and details
+- **Automatic token injection** for authenticated requests
 
-const [login, { isLoading }] = useLoginMutation();
-const result = await login({ username, password }).unwrap();
-```
 
-### Logout
-```typescript
-import { useAppDispatch } from '../store/hooks';
-import { logout } from '../store/slices/authSlice';
+## �️ Developmeont Scripts
 
-const dispatch = useAppDispatch();
-dispatch(logout());
+```bash
+# Start Metro bundler
+yarn start
+
+# Run on iOS
+yarn ios
+
+# Run on Android  
+yarn android
+
+# Install iOS dependencies
+yarn pods
+
+# Lint code
+yarn lint
+
+# Run tests
+yarn test
 ```
 
 ## 🐛 Troubleshooting
 
 ### Metro bundler issues
 ```bash
-npm start -- --reset-cache
+yarn start --reset-cache
 ```
 
 ### iOS build issues
 ```bash
 cd ios && pod install && cd ..
-npm run ios
+yarn ios
 ```
 
 ### Android build issues
 ```bash
 cd android && ./gradlew clean && cd ..
-npm run android
+yarn android
 ```
-
-## 📚 Documentation
-
-- [REDUX_SETUP.md](./REDUX_SETUP.md) - Detailed Redux guide
-- [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md) - What's implemented
-- [src/README.md](./src/README.md) - Original project structure
-- [src/store/README.md](./src/store/README.md) - Redux quick reference
-
-## ✅ Checklist
-
-- [x] Redux Toolkit installed
-- [x] RTK Query configured
-- [x] Redux Persist setup
-- [x] Login API integrated
-- [x] Token storage working
-- [x] Auto-login implemented
-- [x] Logout functionality
-- [x] User data displayed
-- [x] TypeScript types defined
-- [x] No compilation errors
 
 ## 🔔 Firebase Cloud Messaging Setup
 
@@ -208,7 +225,7 @@ npm run android
 1. Clean and rebuild your Android app:
    ```bash
    cd android && ./gradlew clean && cd ..
-   npm run android
+   yarn android
    ```
 
 2. Test push notifications:
@@ -216,7 +233,7 @@ npm run android
    - Click "Send your first message"
    - Enter notification title and text
    - Select your app as target
-   - Paste the FCM Token get from console.log or from store in your app.
+   - Get FCM token from app logs or Redux store
    - Send the test notification
 
 ### 5. Verify Setup
@@ -224,6 +241,41 @@ npm run android
 - Ensure notifications appear when app is in foreground/background
 - Test notification tap actions
 
-## 🎉 You're Ready!
+## 🚀 Getting Started
 
-Run the app and test the complete authentication flow with Redux state management and push notifications!
+1. **Clone and Install**
+   ```bash
+   git clone <repository-url>
+   cd ReactNativeAssessment
+   yarn install
+   ```
+
+2. **iOS Setup**
+   ```bash
+   yarn pods
+   yarn ios
+   ```
+
+3. **Android Setup**
+   ```bash
+   yarn android
+   ```
+
+4. **Configure Firebase** (Optional - for push notifications)
+   - Follow the Firebase Cloud Messaging setup above
+   - Add `google-services.json` to `android/app/`
+   - Rebuild the app
+
+5. **Test the App**
+   - Login with provided test credentials
+   - Browse products and view details
+   - Test push notifications (if Firebase configured)
+
+
+## 📄 License
+
+This project is for assessment purposes.
+
+---
+
+**Happy Coding! 🚀**
