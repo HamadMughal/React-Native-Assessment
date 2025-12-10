@@ -1,97 +1,229 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Quick Start Guide
 
-# Getting Started
+## 🚀 Run the App
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+```bash
+# Install dependencies (if not done)
+npm install
 
-## Step 1: Start Metro
-
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+# iOS
+npm run pods
 npm run ios
 
-# OR using Yarn
-yarn ios
+# Android
+npm run android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 🔐 Login Credentials
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Try these test users from DummyJSON:
 
-## Step 3: Modify your app
+| Username | Password | Name |
+|----------|----------|------|
+| emilys | emilyspass | Emily Johnson |
+| michaelw | michaelwpass | Michael Williams |
+| sophiab | sophiabpass | Sophia Brown |
 
-Now that you have successfully run the app, let's make changes!
+More users: https://dummyjson.com/users
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## 📱 App Flow
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+```
+┌─────────────┐
+│   Splash    │ (3 seconds)
+│   Screen    │
+└──────┬──────┘
+       │
+       ├─ isAuthenticated? ─┐
+       │                    │
+    ✅ Yes               ❌ No
+       │                    │
+       ▼                    ▼
+┌─────────────┐      ┌─────────────┐
+│    Feed     │      │    Login    │
+│   Screen    │◄─────│   Screen    │
+└──────┬──────┘      └─────────────┘
+       │
+       ├─ Click Post
+       │
+       ▼
+┌─────────────┐
+│ Post Detail │
+│   Screen    │
+└─────────────┘
+```
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🗂️ Project Structure
 
-## Congratulations! :tada:
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Button.tsx
+│   ├── Input.tsx
+│   └── PostCard.tsx
+│
+├── constants/          # App constants
+│   ├── colors.ts
+│   └── strings.ts
+│
+├── data/              # Dummy data
+│   └── dummyData.ts
+│
+├── navigation/        # Navigation setup
+│   └── AppNavigator.tsx
+│
+├── screens/           # Screen components
+│   ├── SplashScreen.tsx
+│   ├── LoginScreen.tsx
+│   ├── FeedScreen.tsx
+│   └── PostDetailScreen.tsx
+│
+├── store/             # Redux store
+│   ├── services/
+│   │   └── authApi.ts      # API endpoints
+│   ├── slices/
+│   │   └── authSlice.ts    # Auth state
+│   ├── hooks.ts            # Typed hooks
+│   └── store.ts            # Store config
+│
+├── types/             # TypeScript types
+│   └── navigation.ts
+│
+└── utils/             # Utility functions
+    └── validation.ts
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+## 🔑 Key Files
 
-### Now what?
+### App.tsx
+Entry point with Redux Provider and PersistGate
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### src/store/store.ts
+Redux store configuration with persist
 
-# Troubleshooting
+### src/store/services/authApi.ts
+RTK Query API definitions
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+### src/store/slices/authSlice.ts
+Auth state management
 
-# Learn More
+### src/screens/LoginScreen.tsx
+Login with API integration
 
-To learn more about React Native, take a look at the following resources:
+### src/screens/FeedScreen.tsx
+Feed with user info and logout
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 💡 Usage Examples
+
+### Access User Data
+```typescript
+import { useAppSelector } from '../store/hooks';
+
+const { user, token, isAuthenticated } = useAppSelector(state => state.auth);
+```
+
+### Call Login API
+```typescript
+import { useLoginMutation } from '../store/services/authApi';
+
+const [login, { isLoading }] = useLoginMutation();
+const result = await login({ username, password }).unwrap();
+```
+
+### Logout
+```typescript
+import { useAppDispatch } from '../store/hooks';
+import { logout } from '../store/slices/authSlice';
+
+const dispatch = useAppDispatch();
+dispatch(logout());
+```
+
+## 🐛 Troubleshooting
+
+### Metro bundler issues
+```bash
+npm start -- --reset-cache
+```
+
+### iOS build issues
+```bash
+cd ios && pod install && cd ..
+npm run ios
+```
+
+### Android build issues
+```bash
+cd android && ./gradlew clean && cd ..
+npm run android
+```
+
+## 📚 Documentation
+
+- [REDUX_SETUP.md](./REDUX_SETUP.md) - Detailed Redux guide
+- [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md) - What's implemented
+- [src/README.md](./src/README.md) - Original project structure
+- [src/store/README.md](./src/store/README.md) - Redux quick reference
+
+## ✅ Checklist
+
+- [x] Redux Toolkit installed
+- [x] RTK Query configured
+- [x] Redux Persist setup
+- [x] Login API integrated
+- [x] Token storage working
+- [x] Auto-login implemented
+- [x] Logout functionality
+- [x] User data displayed
+- [x] TypeScript types defined
+- [x] No compilation errors
+
+## 🔔 Firebase Cloud Messaging Setup
+
+### 1. Create Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click "Create a project" or "Add project"
+3. Enter your project name and follow the setup steps
+
+### 2. Add Android App
+1. In your Firebase project, click "Add app" and select Android
+2. Enter your Android package name (bundle identifier)
+   - Find it in `android/app/build.gradle` under `applicationId`
+   - Example: `com.yourcompany.yourapp`
+3. Download the `google-services.json` file
+
+### 3. Configure Android App
+1. Copy the downloaded `google-services.json` file
+2. Paste it in your project's `android/app/` directory
+3. The file structure should look like:
+   ```
+   android/
+   └── app/
+       ├── google-services.json  ← Place here
+       ├── build.gradle
+       └── src/
+   ```
+
+### 4. Rebuild and Test
+1. Clean and rebuild your Android app:
+   ```bash
+   cd android && ./gradlew clean && cd ..
+   npm run android
+   ```
+
+2. Test push notifications:
+   - Open Firebase Console → Your Project → Cloud Messaging
+   - Click "Send your first message"
+   - Enter notification title and text
+   - Select your app as target
+   - Paste the FCM Token get from console.log or from store in your app.
+   - Send the test notification
+
+### 5. Verify Setup
+- Check device logs for FCM token
+- Ensure notifications appear when app is in foreground/background
+- Test notification tap actions
+
+## 🎉 You're Ready!
+
+Run the app and test the complete authentication flow with Redux state management and push notifications!
